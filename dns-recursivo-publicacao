@@ -1,0 +1,17 @@
+ACL RECURSIVO (RESOLVE PARA CONSULTAR O DNS REVERSO EXTERNO)
+
+CADASTRAR DNS EXTERNO
+
+vim /etc/named.conf (ADICIONAR AQUI A FAIXA DE IP)
+
+systemctl restart named-chroot (APLICAR CONFIGURAÇÔES)
+
+tail -f /var/named/chroot/var/named/data/named.log (VISUALIZA LOG)
+
+rndc flush (LIMPA O CACHE BIND)
+
+
+cd /var/named/zones/
+named-checkzone EMPRESA.gov.br EMPRESA.gov.br.db
+rndc reload
+rndc notify EMPRESA.gov.br
