@@ -1,0 +1,28 @@
+#Comandos úteis à gerência de configuração do cluster
+#Comandos para visualizar a configuração do cluster CIB (Cluster Information Base):
+pcs cluster cib --config
+pcs cluster cib
+
+#Comando para backup da configuração do cluster:
+pcs config backup cluster_config_$(date +%Y-%m-%d)
+Restaurando a configuração do cluster a partir do backup:1) Você precisa parar o serviço de cluster no nó, restaurar a configuração e iniciá-lo depois:
+pcs cluster stop node --force
+pcs config restore --local  cluster_config_$(date +%Y-%m-%d).tar.bz2
+pcs cluster start node
+
+#Estes comandos restauram a configuração apenas no nó atual.
+#Para restaurar a configuração em todos os nós, use os comados abaixo.
+pcs cluster stop node --force
+pcs config restore cluster_config_$(date +%Y-%m-%d).tar.bz2
+pcs cluster start node
+
+#Obtendo o relatório do cluster para análise de incidentes:
+pcs cluster report [--from "YYYY-M-D  H:M:S"  [--to  "YYYY-M-D"  H:M:S"]]"  dest
+Você também pode voltar a configuração do cluster para um determinado ponto. Para ver os pontos de configuração execute o comando:
+pcs config checkpoint
+
+
+#Para visualizar a configuração de determinado ponto, use o comando abaixo:
+pcs config  checkpoint view    <checkpoint_number>
+#Para voltar a usar a configuração de determinado ponto, use o comando:
+pcs  config  checkpoint    restore    <checkpoint_number>
