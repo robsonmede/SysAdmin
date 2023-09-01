@@ -1,0 +1,26 @@
+permissão site web / wordpress
+find /var/www/html/website -type d -exec chmod 775 {} +
+find /var/www/html/website -type f -exec chmod 664 {} +
+
+chown -R apache:apache /var/www/html/website/
+
+
+600 senhas
+
+# php admin/cli/reset_password.php
+
+
+<Location "/">
+    SSLRenegBufferSize 10486000
+</Location>
+
+
+server {
+  listen 80;
+  server_name empresa.matrix.com.br www.empresa.matrix.com.br;
+
+  access_log /var/log/nginx/empresa.matrix.com.br-access.log main_ext;
+  error_log /var/log/nginx/empresa.matrix.com.br-error.log warn;
+
+  return 302 https://empresa.matrix.com.br/website;
+}
