@@ -1,0 +1,166 @@
+COMANDOS PROXY REVERSO
+
+FAIL2BAN
+fail2ban-client status | grep "Jail list:" | sed "s/ //g" | awk '{split($2,a,",");for(i in a) system("fail2ban-client status " a[i])}' | grep "Status\|IP list"
+
+===================================================================================================================================
+
+
+FAIL2BAN TEMPLATE ZABBIX PARA ALERTAS NOS SERVERS LINUX
+
+groupadd fail2ban
+usermod -a -G fail2ban zabbix
+ls -l /var/run/fail2ban/fail2ban.sock
+chown root:fail2ban /var/run/fail2ban/fail2ban.sock
+ls -l /var/run/fail2ban/fail2ban.sock
+chmod g+rwx /var/run/fail2ban/fail2ban.sock
+ls -l /var/run/fail2ban/fail2ban.sock
+su - zabbix --shell=/bin/bash -c ' fail2ban-client status http-get-dos'
+systemctl restart zabbix-agent
+systemctl status zabbix-agent
+
+
+===================================================================================================================================
+
+
+fail2ban-client reload
+cat /dev/null > /etc/fail2ban/ip.blacklist
+fail2ban-client reload
+iptables -vL | grep DROP
+fail2ban-client status
+
+DESBANIR IP
+fail2ban-client set apache-example unbanip 127.0.0.1
+fail2ban-client set http-get-dos-example unbanip 127.0.0.1
+
+===================================================================================================================================
+
+
+LOGS
+
+tail -f /var/log/secure
+iptables -h | grep drop
+iptables --list
+tail -f /var/log/nginx
+tail -f /var/log/nginx/site.gov.br-access.log
+tail -f /var/log/messages
+cat /etc/services | grep 80
+nmap -sT -O localhost
+netstat -an | grep 80
+lsof -i | grep 80
+netstat -an | grep 80
+netstat -tlpn
+journalctl | grep ssl
+journalctl | grep 80
+
+===================================================================================================================================
+
+
+BALACEAMENTO PROXY
+pcs cluster standby HA01
+pcs status
+pcs cluster unstandby HA02
+
+===================================================================================================================================
+
+
+AMPLIFY
+yum update amplify-agent
+yum update nginx-amplify-agent
+tail -f /var/log/amplify-agent/agent.log
+systemctl status amplify
+systemctl status nginx-amplify
+
+
+
+===================================================================================================================================
+
+NGINXS COMANDOS
+
+
+nginx -t
+nginx -s reload
+systemctl status nginx
+nginx -v
+
+INSTALANDO NOVA VERSAO DO NGINX
+
+ cd /usr/local/src/
+ ls
+ rm -Rf nginx-1.13.12*
+ clear
+ ls
+
+===================================================================================================================================
+
+COMPILAR OPENSSL VERSAO NOVA
+
+ wget https://ftp.openssl.org/source/old/1.1.1/openssl-1.1.1.tar.gz
+ tar xvf openssl-1.1.1.tar.gz
+ ./config --prefix=/usr --openssldir=/etc/ssl --libdir=lib no-shared zlib-dynamic
+ make
+ make install
+ export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+ echo "export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64" >> ~/.bashrc
+
+
+===================================================================================================================================
+COMPILAR NGINX VERSAO NOVA
+
+ wget http://nginx.org/download/nginx-1.17.8.tar.gz
+ tar -vzxf nginx-1.17.8.tar.gz
+ ls
+ cd nginx-1.17.8
+ clear
+ nginx -V
+
+
+  ./configure --user=nginx --group=nginx --with-compat --add-dynamic-module=/usr/local/src/ModSecurity-nginx --prefix=/etc --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/run/nginx.pid --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-http_stub_status_module --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_auth_request_module --with-threads --with-stream --with-stream_ssl_module --with-http_slice_module --with-mail --with-mail_ssl_module --with-file-aio --with-http_v2_module --with-openssl=/usr/local/src/openssl --add-module=/usr/local/src/nginx-sticky-module-ng
+ make
+ make install
+
+ nginx -v
+ needs-restarting -s
+ systemctl restart nginx
+ pcs status
+ pcs cluster unstandby HA02
+ pcs stats
+===================================================================================================================================
+
+ESPAÇO NO DIRETORIO /
+
+du -h ./
+du -sh /var/*
+du -sh /*
+
+===================================================================================================================================
+
+
+LOG ROTATE
+vim /etc/logrotate.d/nginx
+logrotate -d /etc/logrotate.d/nginx
+logrotate -d /etc/logrotate.d/nginx
+
+===================================================================================================================================
+
+
+FAIL2BAN
+fail2ban-client status | grep "Jail list:" | sed "s/ //g" | awk '{split($2,a,",");for(i in a) system("fail2ban-client status " a[i])}' | grep "Status\|IP list"
+
+===================================================================================================================================
+
+
+MODSECURITY
+
+LOG DE BLOQUEIOS
+
+/var/log/nginx/modsec_audit.log
+
+
+===================================================================================================================================
+
+
+./configure --user=nginx --group=nginx --with-compat --add-module=/usr/local/src/nginx-sticky-module-ng --add-dynamic-module=/usr/local/src/ModSecurity-nginx --prefix=/etc --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --pid-path=/run/nginx.pid --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-http_stub_status_module --with-http_ssl_module --with-http_realip_module --with-http_addition_module --with-http_sub_module --with-http_dav_module --with-http_flv_module --with-http_mp4_module --with-http_gunzip_module --with-http_gzip_static_module --with-http_random_index_module --with-http_secure_link_module --with-http_auth_request_module --with-threads --with-stream --with-http_v2_module --with-openssl=/usr/local/src/openssl
+
+
+Compilar o Nginx para a versão Nova 1.17.8 e o Open SSL 1.1.1 (HA-03)
