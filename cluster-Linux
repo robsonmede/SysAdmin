@@ -26,3 +26,22 @@ pcs config checkpoint
 pcs config  checkpoint view    <checkpoint_number>
 #Para voltar a usar a configuração de determinado ponto, use o comando:
 pcs  config  checkpoint    restore    <checkpoint_number>
+
+
+#PCS CLUSTER COMANDOS HA LINUX
+
+pcs cluster setup --start virtual_ip node1 node2 --force
+pcs cluster enable --allpc
+pcs resource create virtual_ip ocf:heartbeat:IPaddr2 ip=10.206.200.97 cidr_netmask=24 op monitor interval=30s
+pcs resource create http_server ocf:heartbeat:nginx configfile="/etc/nginx/conf.d/" op monitor timeout=”20s” interval=”60s”
+pcs constraint colocation add http_server with virtual_ip INFINITY
+pcs constraint order virtual_ip then http_server
+
+pcs resource delete webserver
+
+cluster-1
+cluster-2:
+
+pcs resource debug-start webserver --full
+
+Vcenter-fence_start_0
