@@ -1,0 +1,6 @@
+TraceEnable Off
+
+	# Disable HTTP TRACE - NESSUS
+        RewriteEngine on
+        RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+        RewriteRule .* - [F]
