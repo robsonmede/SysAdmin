@@ -1,0 +1,27 @@
+Para o serviço do VPN
+
+systemctl stop pritunlvpn
+
+Iniciar o serviço do Nginx
+systemctl start nginx
+Comando para renovar o certificado
+certbot renew -d vpn.empresax.com.br
+ou
+certbot --nginx -d vpn.empresax.com
+
+systemctl restart pritunl
+pritunl set app.server_cert "$(cat /etc/letsencrypt/live/vpn.empresax.com/fullchain.pem)"
+pritunl set app.server_key "$(cat /etc/letsencrypt/live/vpn.empresax.com/privkey.pem)"
+
+systemctl disable nginx
+
+
+Importar certificado SSL para o MongoDB
+cat /etc/letsencrypt/live/vpn.empresax.com/privkey.pem /etc/letsencrypt/live/empresax/fullchain.pem > /etc/ssl/mongodb.pem
+chown -R mongod: mongodb.pem
+chmod 600 /etc/ssl/mongodb.pem
+
+
+
+CREATE DATABASE empresa_set_db WITH OWNER userdb;
+GRANT ALL PRIVILEGES ON DATABASE empresa_set_db to userdb;
