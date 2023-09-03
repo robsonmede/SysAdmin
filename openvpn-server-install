@@ -1,0 +1,25 @@
+git clone git clone https://github.com/kylemanna/docker-openvpn.git
+git clone https://github.com/kylemanna/docker-openvpn.git
+
+cd docker-openvpn/
+
+vim Dockerfile
+docker built -t open-vpn-server .
+
+docker built -t open-vpn-server .
+systemctl restart docker
+docker built -t open-vpn-server .
+
+ docker build -t openvpn .
+docker images
+mkdir /vpn-data
+touch /vpn-data/vars
+docker run -v $PWD/vpn-data:/etc/openvpn --rm open-vpn-server ovpn_genconfig -u udp://awsvpn80.duckdns.org:1194
+docker run -v $PWD/vpn-data:/etc/openvpn --rm openvpn ovpn_genconfig -u udp://awsvpn80.duckdns.org:1194
+docker run -v $PWD/vpn-data:/etc/openvpn --rm -it openvpn ovpn_initpki
+docker run -v $PWD/vpn-data:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN openvpn
+docker ps
+docker logs open-vpn-server -f
+docker run -v $PWD/vpn-data:/etc/openvpn --rm -it openvpn easyrsa build-client-full firstuser nopass
+docker run -v $PWD/vpn-data:/etc/openvpn --rm openvpn ovpn_getclient firstuser > firstuser.ovpn
+cat firstuser.ovpn
